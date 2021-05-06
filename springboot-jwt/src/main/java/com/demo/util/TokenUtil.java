@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.demo.entity.User;
+import com.demo.user.entity.User;
 import org.apache.logging.log4j.util.Strings;
 
 import java.util.Calendar;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class TokenUtil {
 
-    private static final String JWT_SECRET_KEY = "testjwt";
+    public static final String JWT_SECRET_KEY = "testjwt";
 
     /**
      * 创建Token
@@ -60,18 +60,15 @@ public class TokenUtil {
      */
     public static boolean isValid(String token) {
         if (Strings.isNotBlank(token)) {
-            //创建验证对象,这里使用的加密算法和密钥必须与生成TOKEN时的相同否则无法验证
-            JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(JWT_SECRET_KEY)).build();
-            //验证JWT
-            DecodedJWT decodedJwt = jwtVerifier.verify(token);
-
-            //获取JWT中的数据,注意数据类型一定要与添加进去的数据类型一致,否则取不到数据
-            System.out.println(decodedJwt.getClaim("userid").asInt());
-            System.out.println(decodedJwt.getClaim("username").asString());
-            System.out.println(decodedJwt.getClaim("email").asString());
-            System.out.println(decodedJwt.getExpiresAt());
-
-            return new Date().before(decodedJwt.getExpiresAt());
+            try {
+                //创建验证对象,这里使用的加密算法和密钥必须与生成TOKEN时的相同否则无法验证
+                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(JWT_SECRET_KEY)).build();
+                //验证JWT
+                DecodedJWT decodedJwt = jwtVerifier.verify(token);
+                return new Date().before(decodedJwt.getExpiresAt());
+            } catch (Exception e) {
+                return false;
+            }
         } else {
             return false;
         }

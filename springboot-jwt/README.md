@@ -1,11 +1,12 @@
 # Spring Boot 集成 JWT
 
-![image-20210506153239426](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20210506153239426.png)
+<img src="https://img-blog.csdnimg.cn/20210506164527657.png" width="80%" />
+
 
 > **JWT**
 >
 > * **JWT(Json Web Token)**，是一种广泛应用于网络环境传输、基于 `JSON` 的开放标准(RFC 7519)，主要应用于`单点登录(SSO)`。
-> * 官方网址：[https://jwt.io/](https://jwt.io/)
+> * **官方网址：**[https://jwt.io/](https://jwt.io/)
 
 
 
@@ -28,6 +29,10 @@
 ```
 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MjAyODY1NTgsInVzZXJpZCI6MSwiZW1haWwiOiIxMjNAMTIzLmNvbSIsInVzZXJuYW1lIjoiQUNHa2FrYSJ9.UAXvhgPFVcibCWR5WY2CghNRE9aFiZ4Ps8kdFtxhW8k
 ```
+**官网解析结果：**
+
+<img src="https://img-blog.csdnimg.cn/20210506164731957.png" width="80%" />
+
 
 **JWT 主要包含三个部分：**
 
@@ -79,7 +84,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.demo.entity.User;
+import com.demo.user.entity.User;
 import org.apache.logging.log4j.util.Strings;
 
 import java.util.Calendar;
@@ -96,7 +101,7 @@ import java.util.Map;
  */
 public class TokenUtil {
 
-    private static final String JWT_SECRET_KEY = "testjwt";
+    public static final String JWT_SECRET_KEY = "testjwt";
 
     /**
      * 创建Token
@@ -135,18 +140,15 @@ public class TokenUtil {
      */
     public static boolean isValid(String token) {
         if (Strings.isNotBlank(token)) {
-            //创建验证对象,这里使用的加密算法和密钥必须与生成TOKEN时的相同否则无法验证
-            JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(JWT_SECRET_KEY)).build();
-            //验证JWT
-            DecodedJWT decodedJwt = jwtVerifier.verify(token);
-
-            //获取JWT中的数据,注意数据类型一定要与添加进去的数据类型一致,否则取不到数据
-            System.out.println(decodedJwt.getClaim("userid").asInt());
-            System.out.println(decodedJwt.getClaim("username").asString());
-            System.out.println(decodedJwt.getClaim("email").asString());
-            System.out.println(decodedJwt.getExpiresAt());
-
-            return new Date().before(decodedJwt.getExpiresAt());
+            try {
+                //创建验证对象,这里使用的加密算法和密钥必须与生成TOKEN时的相同否则无法验证
+                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(JWT_SECRET_KEY)).build();
+                //验证JWT
+                DecodedJWT decodedJwt = jwtVerifier.verify(token);
+                return new Date().before(decodedJwt.getExpiresAt());
+            } catch (Exception e) {
+                return false;
+            }
         } else {
             return false;
         }
@@ -182,14 +184,31 @@ public class TokenUtil {
 
 
 
-## 5.源码地址
+## 5.测试
 
-**Github：**
+> **测试地址1：**http://localhost:8081/index/login
+
+**请求方式：POST**
+
+**响应结果：**
+
+<img src="https://img-blog.csdnimg.cn/202105061651022.png" width="100%" />
 
 
 
-整理完毕，完结撒花~
 
-<br /><br /><br /><br />
+> **测试地址2：**http://localhost:8081/index/getInfo
 
-参考文章
+**请求方式：GET**
+
+**响应结果：**
+
+<img src="https://img-blog.csdnimg.cn/20210506165009390.png" width="60%" />
+
+
+
+
+## 6.源码地址
+
+**Github：**[https://github.com/ACGkaka/SpringBootExamples/tree/main/springboot-jwt](https://github.com/ACGkaka/SpringBootExamples/tree/main/springboot-jwt)
+
