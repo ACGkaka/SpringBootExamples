@@ -1,6 +1,6 @@
 # Spring Boot 集成 JWT
 
-<img src="https://img-blog.csdnimg.cn/20210506164527657.png" width="80%" />
+<img src="https://img-blog.csdnimg.cn/2021050711093511.png" width="80%" />
 
 
 > **JWT**
@@ -74,8 +74,11 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MjAyODY1NTgsInVzZXJpZCI6MSwiZW1
 > * **HMAC (Hash Message Authentication Code)**，散列消息鉴别码，基于密钥的Hash算法的认证协议。用公开函数和密钥产生一个固定长度的值作为认证标识，用这个标识鉴别消息的完整性。常用于接口签名验证。
 
 
+## 4.代码结构
+<img src="https://img-blog.csdnimg.cn/20210507105312554.png" width="50%" />
 
-## 4.工具类
+
+## 5.工具类
 
 **TokenUtil.java**
 
@@ -184,9 +187,9 @@ public class TokenUtil {
 
 
 
-## 5.测试
+## 6.测试
 
-> **测试地址1：**http://localhost:8081/index/login
+> **测试地址1：** http://localhost:8081/index/login
 
 **请求方式：POST**
 
@@ -197,7 +200,7 @@ public class TokenUtil {
 
 
 
-> **测试地址2：**http://localhost:8081/index/getInfo
+> **测试地址2：** http://localhost:8081/index/getInfo
 
 **请求方式：GET**
 
@@ -208,7 +211,6 @@ public class TokenUtil {
 
 
 
-## 6.源码地址
+## 7.源码地址
 
 **Github：**[https://github.com/ACGkaka/SpringBootExamples/tree/main/springboot-jwt](https://github.com/ACGkaka/SpringBootExamples/tree/main/springboot-jwt)
-
