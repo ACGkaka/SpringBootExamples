@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: springboot-elasticsearch
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200  #es服务器地址（默认）
+
+my:
+  es:
+    hostname: 127.0.0.1
+    port: 9200
+    scheme: http
