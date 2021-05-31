@@ -2,7 +2,7 @@ package com.dubbo.service;
 
 /**
  * <p> @Title HelloService
- * <p> @Description Dubbo ¹«¹²Api
+ * <p> @Description Dubbo å…¬å…±Api
  *
  * @author ACGkaka
  * @date 2021/4/23 13:26
