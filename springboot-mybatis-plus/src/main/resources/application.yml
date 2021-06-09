@@ -20,7 +20,7 @@ spring:
       testOnBorrow: false
       testOnReturn: false
       poolPreparedStatements: true
-      #   ÅäÖÃ¼à¿ØÍ³¼ÆÀ¹½ØµÄfilters£¬È¥µôºó¼à¿Ø½çÃæsqlÎŞ·¨Í³¼Æ£¬'wall'ÓÃÓÚ·À»ğÇ½
+      #   é…ç½®ç›‘æ§ç»Ÿè®¡æ‹¦æˆªçš„filtersï¼Œå»æ‰åç›‘æ§ç•Œé¢sqlæ— æ³•ç»Ÿè®¡ï¼Œ'wall'ç”¨äºé˜²ç«å¢™
       #filters: stat,wall,log4j
       maxPoolPreparedStatementPerConnectionSize: 20
       useGlobalDataSourceStat: true
@@ -29,8 +29,8 @@ spring:
 # mybatis-plus
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
-  # ÊµÌåÉ¨Ãè£¬¶à¸öpackageÓÃ¶ººÅ»òÕß·ÖºÅ·Ö¸ô
+  # å®ä½“æ‰«æï¼Œå¤šä¸ªpackageç”¨é€—å·æˆ–è€…åˆ†å·åˆ†éš”
   typeAliasesPackage: cn.agile.stats.*.entity
-  # ²âÊÔ»·¾³´òÓ¡sql
+  # æµ‹è¯•ç¯å¢ƒæ‰“å°sql
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
