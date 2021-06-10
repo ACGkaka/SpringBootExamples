@@ -15,7 +15,7 @@ import java.util.List;
  * <p> @Description EasyExcel监听器
  * <p> UserListener 不能被spring管理，要每次读取excel都要new,然后里面用到spring可以构造方法传进去
  *
- * @author zhj
+ * @author ACGkaka
  * @date 2021/6/9 12:03
  */
 public class UserListener extends AnalysisEventListener<User> {
