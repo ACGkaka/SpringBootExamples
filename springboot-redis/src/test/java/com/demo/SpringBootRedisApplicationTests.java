@@ -1,6 +1,7 @@
 package com.demo;
 
 import com.demo.entity.UserEntity;
+import com.demo.util.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,30 +16,37 @@ import java.io.Serializable;
 public class SpringBootRedisApplicationTests {
 
     @Autowired
-    private RedisTemplate<String, String> strRedisTemplate;
-    @Autowired
-    private RedisTemplate<String, Serializable> serializableRedisTemplate;
+    private RedisUtil redisUtil;
 
     @Test
-    public void testString1() {
-        strRedisTemplate.opsForValue().set("redis_test:strKey", "acgkaka");
-        System.out.println(strRedisTemplate.opsForValue().get("redis_test:strKey"));
+    public void test1() {
+        // 测试字符串，保存、查询
+        String key = "redis_test:strKey";
+        redisUtil.set(key, "acgkaka");
+        // true
+        System.out.println("hasKey: " + redisUtil.hasKey(key));
+        // []
+        System.out.println("keys1: " + redisUtil.keys("redis"));
+        // redis_test:strKey
+        System.out.println("keys2: " + redisUtil.keys("redis*"));
+        // -1
+        System.out.println("getExpire: " + redisUtil.getExpire(key));
+        // false
+        System.out.println("isExpire: " + redisUtil.isExpire(key));
+        // acgkaka
+        System.out.println("value: " + redisUtil.get(key));
     }
 
     @Test
-    public void testString2() {
-        strRedisTemplate.boundValueOps("redis_test:strKey222").set("acgkaka222");
-        System.out.println(strRedisTemplate.boundValueOps("redis_test:strKey222").get());
-    }
-
-    @Test
-    public void testSerializable() {
+    public void test2() {
+        // 保存对象
         UserEntity user = new UserEntity();
         user.setId(1L);
         user.setUserName("清风烟柳");
         user.setUserSex("男");
-        serializableRedisTemplate.opsForValue().set("redis_test:user", user);
-        UserEntity user2 = (UserEntity) serializableRedisTemplate.opsForValue().get("redis_test:user");
+        redisUtil.set("redis_test:user", user);
+        // 查询对象
+        UserEntity user2 = (UserEntity) redisUtil.get("redis_test:user");
         System.out.println("user:" + user2.getId() + "," + user2.getUserName() + "," + user2.getUserSex());
     }
 
