@@ -65,6 +65,9 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(stringSerializer);
         redisTemplate.setHashValueSerializer(stringSerializer);
 
+        /// 非spring注入使用RedisTemplate,需先调用afterPropertiesSet()方法
+//        redisTemplate.afterPropertiesSet();
+
         //设置连接工厂
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         return redisTemplate;
