@@ -1,5 +1,7 @@
 package com.demo.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -11,14 +13,19 @@ import java.util.concurrent.TimeUnit;
  * <p> @Title RedisUtil
  * <p> @Description Redis工具类
  *
- * @author zhj
+ * @author ACGkaka
  * @date 2021/6/16 16:32
  */
 @Component
 public class RedisUtil {
 
+    @Qualifier("redisTemplate")
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Qualifier("prefixRedisTemplate")
+    @Resource
+    private RedisTemplate<String, Object> prefixRedisTemplate;
 
     /**
      * 放入缓存
@@ -38,6 +45,23 @@ public class RedisUtil {
     }
 
     /**
+     * 放入缓存
+     *
+     * @param key   键，带前缀
+     * @param value 值
+     * @return true成功 false失败
+     */
+    public boolean setWithPrefix(String key, Object value) {
+        try {
+            prefixRedisTemplate.opsForValue().set(key, value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * 获取缓存
      *
      * @param key 键
@@ -45,6 +69,16 @@ public class RedisUtil {
      */
     public Object get(String key) {
         return key == null ? null : redisTemplate.opsForValue().get(key);
+    }
+
+    /**
+     * 获取缓存
+     *
+     * @param key 键，带前缀
+     * @return 值
+     */
+    public Object getWithPrefix(String key) {
+        return key == null ? null : prefixRedisTemplate.opsForValue().get(key);
     }
 
     /**
@@ -134,6 +168,19 @@ public class RedisUtil {
             return false;
         }
         return Boolean.TRUE.equals(redisTemplate.hasKey(key));
+    }
+
+    /**
+     * 判断key是否存在
+     *
+     * @param key 键
+     * @return true 存在 false不存在
+     */
+    public boolean hasKeyWithPrefix(String key) {
+        if (key == null) {
+            return false;
+        }
+        return Boolean.TRUE.equals(prefixRedisTemplate.hasKey(key));
     }
 
 }

@@ -27,7 +27,7 @@ public class SpringBootRedisApplicationTests {
         System.out.println("hasKey: " + redisUtil.hasKey(key));
         // []
         System.out.println("keys1: " + redisUtil.keys("redis"));
-        // redis_test:strKey
+        // [redis_test:strKey]
         System.out.println("keys2: " + redisUtil.keys("redis*"));
         // -1
         System.out.println("getExpire: " + redisUtil.getExpire(key));
@@ -48,6 +48,23 @@ public class SpringBootRedisApplicationTests {
         // 查询对象
         UserEntity user2 = (UserEntity) redisUtil.get("redis_test:user");
         System.out.println("user:" + user2.getId() + "," + user2.getUserName() + "," + user2.getUserSex());
+    }
+
+    @Test
+    public void test3() {
+        // 测试前缀
+        String key = "strKey";
+        redisUtil.setWithPrefix(key, "acgkaka");
+        // false
+        System.out.println("hasKey: " + redisUtil.hasKey(key));
+        // true
+        System.out.println("hasKey: " + redisUtil.hasKeyWithPrefix(key));
+        // [redis_test:strKey, redis_test:user, ACGkaka:strKey]
+        System.out.println("keys: " + redisUtil.keys("*"));
+        // null
+        System.out.println("value: " + redisUtil.get(key));
+        // acgkaka
+        System.out.println("value: " + redisUtil.getWithPrefix(key));
     }
 
 }

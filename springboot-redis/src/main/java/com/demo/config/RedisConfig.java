@@ -1,10 +1,15 @@
 package com.demo.config;
 
+import com.demo.redis.RedisCustomizeProperties;
+import com.demo.redis.RedisStringSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.io.Serializable;
@@ -17,7 +22,14 @@ import java.io.Serializable;
  * @date 2020/12/9 15:16
  */
 @Configuration
+@EnableConfigurationProperties(RedisCustomizeProperties.class)
 public class RedisConfig {
+
+    /**
+     * 读取application.yml中的前缀信息
+     */
+    @Autowired
+    private RedisCustomizeProperties redisCustomizeProperties;
 
     /**
      * 配置RedisTemplate
@@ -32,6 +44,27 @@ public class RedisConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         //设置为value的存储方式为JDK二进制序列化方式，还有jackson序列化方式（Jackson2JsonRedisSerialize）
         redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        //设置连接工厂
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        return redisTemplate;
+    }
+    /**
+     * 配置RedisTemplate
+     *
+     * @param redisConnectionFactory 连接工厂
+     * @return RedisTemplate
+     */
+    @Bean
+    public RedisTemplate<String, Serializable> prefixRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();
+
+        //设置key、value的序列化方式为字符串
+        RedisSerializer stringSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(new RedisStringSerializer(redisCustomizeProperties.getPrefix()));
+        redisTemplate.setHashKeySerializer(stringSerializer);
+        redisTemplate.setValueSerializer(stringSerializer);
+        redisTemplate.setHashValueSerializer(stringSerializer);
+
         //设置连接工厂
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         return redisTemplate;

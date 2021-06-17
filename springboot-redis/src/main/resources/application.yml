@@ -5,6 +5,8 @@ spring:
     host: 127.0.0.1
     # Redis数据库索引（默认为0）
     database: 0
+    # 前缀，添加之后会在key前拼接分组，【要有冒号】
+    prefix: "ACGkaka:"
     # Redis服务器连接端口
     port: 6379
     # 链接超时时间 单位 ms（毫秒）

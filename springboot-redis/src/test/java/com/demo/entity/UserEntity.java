@@ -6,7 +6,7 @@ import java.io.Serializable;
  * <p> @Title UserEntity
  * <p> @Description Redis测试 - 序列化实体类
  *
- * @author zhj
+ * @author ACGkaka
  * @date 2020/12/9 15:21
  */
 public class UserEntity implements Serializable {
