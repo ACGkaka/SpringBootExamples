@@ -43,7 +43,7 @@ public class TokenUtil {
                 // 添加头部
                 .withHeader(map)
                 // 添加payload
-                .withClaim("userid",user.getId())
+                .withClaim("userId",user.getId())
                 .withClaim("username",user.getUsername())
                 .withClaim("email",user.getEmail())
                 // 设置过期时间
@@ -90,7 +90,7 @@ public class TokenUtil {
 
             //获取JWT中的数据,注意数据类型一定要与添加进去的数据类型一致,否则取不到数据
             Map<String, Object> map = new HashMap<>();
-            map.put("userid", decodedJwt.getClaim("userid").asInt());
+            map.put("userId", decodedJwt.getClaim("userId").asInt());
             map.put("username", decodedJwt.getClaim("username").asString());
             map.put("email", decodedJwt.getClaim("email").asString());
             map.put("expire", decodedJwt.getExpiresAt());
