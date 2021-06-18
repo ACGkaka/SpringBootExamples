@@ -1,9 +1,7 @@
 package com.demo.config;
 
-import com.demo.common.redis.RedisCustomizeProperties;
 import com.demo.common.redis.RedisStringSerializer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -22,14 +20,13 @@ import java.io.Serializable;
  * @date 2020/12/9 15:16
  */
 @Configuration
-@EnableConfigurationProperties(RedisCustomizeProperties.class)
 public class RedisConfig {
 
     /**
      * 读取application.yml中的前缀信息
      */
-    @Autowired
-    private RedisCustomizeProperties redisCustomizeProperties;
+    @Value("${spring.redis.prefix:acgkaka:}")
+    private String prefix;
 
     /**
      * 配置RedisTemplate
@@ -60,7 +57,7 @@ public class RedisConfig {
 
         //设置key、value的序列化方式为字符串
         RedisSerializer stringSerializer = new StringRedisSerializer();
-        redisTemplate.setKeySerializer(new RedisStringSerializer(redisCustomizeProperties.getPrefix()));
+        redisTemplate.setKeySerializer(new RedisStringSerializer(prefix));
         redisTemplate.setHashKeySerializer(stringSerializer);
         redisTemplate.setValueSerializer(stringSerializer);
         redisTemplate.setHashValueSerializer(stringSerializer);
