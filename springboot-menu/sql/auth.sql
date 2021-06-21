@@ -75,16 +75,6 @@ CREATE TABLE `T_ROLE_MENU` (
 
 
 -- ------------------------------
--- 角色和部门关联表
--- ------------------------------
-CREATE TABLE `T_ROLE_DEPT` (
-  `role_id` bigint(16) NOT NULL COMMENT '角色ID',
-  `dept_id` bigint(16) NOT NULL COMMENT '部门ID',
-  PRIMARY KEY (`role_id`, `dept_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色和部门关联表';
-
-
--- ------------------------------
 -- 用户和角色关联表
 -- ------------------------------
 CREATE TABLE `T_USER_ROLE` (

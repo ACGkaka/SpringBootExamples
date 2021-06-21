@@ -41,6 +41,10 @@ public class User implements Serializable {
     */
     private String phone;
     /**
+     * 角色ID数组
+     */
+    private Long[] roleIds;
+    /**
     * 删除标识（0未删除 1已删除）
     */
     private String delFlag;
