@@ -10,6 +10,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -53,6 +54,8 @@ public class RoleServiceImpl implements RoleService {
         if (list != null && list.size() > 0) {
             throw new BaseException("角色名称已存在");
         }
+        role.setCreateTime(LocalDateTime.now());
+        role.setUpdateTime(LocalDateTime.now());
         roleMapper.insert(role);
         return role;
     }
@@ -64,6 +67,7 @@ public class RoleServiceImpl implements RoleService {
         if (result == null) {
             throw new BaseException("角色不存在");
         }
+        role.setUpdateTime(LocalDateTime.now());
         roleMapper.update(role);
         return  queryById(role.getId());
     }

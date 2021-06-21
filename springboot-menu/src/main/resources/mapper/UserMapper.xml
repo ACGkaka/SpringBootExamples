@@ -76,29 +76,12 @@
     <!--通过主键修改数据-->
     <update id="update">
         update auth.t_user
-        <set>
-            <if test="deptId != null">
-                dept_id = #{deptId},
-            </if>
-            <if test="username != null and username != ''">
-                username = #{username},
-            </if>
-            <if test="password != null and password != ''">
-                password = #{password},
-            </if>
-            <if test="email != null and email != ''">
-                email = #{email},
-            </if>
-            <if test="phone != null and phone != ''">
-                phone = #{phone},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime},
-            </if>
-        </set>
+        set
+            dept_id = #{deptId},
+            username = #{username},
+            password = #{password},
+            email = #{email},
+            phone = #{phone}
         where id = #{id} and del_flag != '1'
     </update>
 

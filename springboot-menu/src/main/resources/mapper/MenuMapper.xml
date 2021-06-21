@@ -84,35 +84,14 @@
     <!--通过主键修改数据-->
     <update id="update">
         update auth.t_menu
-        <set>
-            <if test="parentId != null">
-                parent_id = #{parentId},
-            </if>
-            <if test="menuName != null and menuName != ''">
-                menu_name = #{menuName},
-            </if>
-            <if test="menuUrl != null and menuUrl != ''">
-                menu_url = #{menuUrl},
-            </if>
-            <if test="menuType != null and menuType != ''">
-                menu_type = #{menuType},
-            </if>
-            <if test="orderNum != null">
-                order_num = #{orderNum},
-            </if>
-            <if test="visible != null and visible != ''">
-                visible = #{visible},
-            </if>
-            <if test="icon != null and icon != ''">
-                icon = #{icon},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime},
-            </if>
-        </set>
+        set
+            parent_id = #{parentId},
+            menu_name = #{menuName},
+            menu_url = #{menuUrl},
+            menu_type = #{menuType},
+            order_num = #{orderNum},
+            visible = #{visible},
+            icon = #{icon}
         where id = #{id} and del_flag != '1'
     </update>
 

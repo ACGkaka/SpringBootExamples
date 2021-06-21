@@ -54,7 +54,7 @@ CREATE TABLE `T_MENU` (
 CREATE TABLE `T_ROLE` (
   `id` bigint(16) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `role_name` varchar(64) COMMENT '角色名称',
-  `role_key` varchar(64) COMMENT '角色昵称',
+  `role_nickname` varchar(64) COMMENT '角色昵称',
   `status` char(1) COMMENT '角色状态（0正常 1停用）',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标识（0未删除 1已删除）',
   `remark` varchar(255) COMMENT '备注',

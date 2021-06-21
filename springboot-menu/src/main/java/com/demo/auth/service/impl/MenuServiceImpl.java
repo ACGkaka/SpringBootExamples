@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -46,6 +47,11 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Menu insert(Menu menu) {
         // 新增菜单
+        if (menu.getParentId() == null) {
+            menu.setParentId(-1L);
+        }
+        menu.setCreateTime(LocalDateTime.now());
+        menu.setUpdateTime(LocalDateTime.now());
         menuMapper.insert(menu);
         return menu;
     }
@@ -57,6 +63,7 @@ public class MenuServiceImpl implements MenuService {
         if (result == null) {
             throw new BaseException("菜单不存在");
         }
+        menu.setUpdateTime(LocalDateTime.now());
         menuMapper.update(menu);
         return  queryById(menu.getId());
     }

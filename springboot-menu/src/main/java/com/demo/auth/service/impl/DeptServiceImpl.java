@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -52,6 +53,11 @@ public class DeptServiceImpl implements DeptService {
         if (list != null && list.size() > 0) {
             throw new BaseException("部门名称已存在");
         }
+        if (dept.getParentId() == null) {
+            dept.setParentId(-1L);
+        }
+        dept.setCreateTime(LocalDateTime.now());
+        dept.setUpdateTime(LocalDateTime.now());
         deptMapper.insert(dept);
         return dept;
     }
@@ -63,6 +69,7 @@ public class DeptServiceImpl implements DeptService {
         if (result == null) {
             throw new BaseException("部门不存在");
         }
+        dept.setUpdateTime(LocalDateTime.now());
         deptMapper.update(dept);
         return  queryById(dept.getId());
     }

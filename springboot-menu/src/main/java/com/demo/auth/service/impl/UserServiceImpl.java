@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -52,7 +53,9 @@ public class UserServiceImpl implements UserService {
         if (list != null && list.size() > 0) {
             throw new BaseException("用户名已存在");
         }
-         userMapper.insert(user);
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.now());
+        userMapper.insert(user);
         return user;
     }
 
@@ -63,6 +66,7 @@ public class UserServiceImpl implements UserService {
         if (result == null) {
             throw new BaseException("用户不存在");
         }
+        user.setUpdateTime(LocalDateTime.now());
         userMapper.update(user);
         return  queryById(user.getId());
     }

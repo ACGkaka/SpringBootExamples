@@ -27,7 +27,7 @@ public class Role implements Serializable {
     /**
     * 角色昵称
     */
-    private String roleKey;
+    private String roleNickname;
     /**
     * 角色状态（0正常 1停用）
     */
