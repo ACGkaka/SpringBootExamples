@@ -25,11 +25,9 @@ public interface DeptMapper {
     /**
      * 查询指定行数据
      *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
      * @return 对象列表
      */
-    List<Dept> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<Dept> queryAll();
 
 
     /**
@@ -38,7 +36,7 @@ public interface DeptMapper {
      * @param dept 实例对象
      * @return 对象列表
      */
-    List<Dept> queryAll(Dept dept);
+    List<Dept> query(Dept dept);
 
     /**
      * 新增数据

@@ -25,11 +25,9 @@ public interface MenuMapper {
     /**
      * 查询指定行数据
      *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
      * @return 对象列表
      */
-    List<Menu> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<Menu> queryAll();
 
 
     /**
@@ -38,7 +36,7 @@ public interface MenuMapper {
      * @param menu 实例对象
      * @return 对象列表
      */
-    List<Menu> queryAll(Menu menu);
+    List<Menu> query(Menu menu);
 
     /**
      * 新增数据

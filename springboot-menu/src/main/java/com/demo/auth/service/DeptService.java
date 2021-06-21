@@ -1,6 +1,8 @@
 package com.demo.auth.service;
 
 import com.demo.auth.entity.Dept;
+import com.github.pagehelper.PageInfo;
+
 import java.util.List;
 
 /**
@@ -22,11 +24,18 @@ public interface DeptService {
     /**
      * 查询多条数据
      *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
+     * @return 对象列表
+     * @param pageNum 页码
+     * @param pageSize 每页数量
+     */
+    PageInfo<Dept> queryByPage(int pageNum, int pageSize);
+
+    /**
+     * 查询多条数据
+     *
      * @return 对象列表
      */
-    List<Dept> queryAllByLimit(int offset, int limit);
+    List<Dept> queryAll();
 
     /**
      * 新增数据
@@ -48,8 +57,7 @@ public interface DeptService {
      * 通过主键删除数据
      *
      * @param id 主键
-     * @return 是否成功
      */
-    boolean deleteById(Long id);
+    void deleteById(Long id);
 
 }

@@ -4,13 +4,11 @@ import com.demo.auth.entity.User;
 import com.demo.auth.mapper.UserMapper;
 import com.demo.auth.service.UserService;
 import com.demo.common.exception.BaseException;
-import com.demo.util.AESUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -21,30 +19,28 @@ import java.util.List;
  */
 @Service("tUserService")
 public class UserServiceImpl implements UserService {
+
     @Resource
     private UserMapper userMapper;
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
-     */
     @Override
     public User queryById(Long id) {
+        // 根据 ID 查找
         return  userMapper.queryById(id);
     }
 
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
     @Override
-    public List<User> queryAllByLimit(int offset, int limit) {
-        return  userMapper.queryAllByLimit(offset, limit);
+    public PageInfo<User> queryByPage(int pageNum, int pageSize) {
+        // 分页查找
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> list = userMapper.queryAll();
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public List<User> queryAll() {
+        // 查询全部
+        return userMapper.queryAll();
     }
 
     @Override
@@ -52,13 +48,10 @@ public class UserServiceImpl implements UserService {
         // 新增用户
         User query = new User();
         query.setUsername(user.getUsername());
-        List<User> list = userMapper.queryAll(query);
+        List<User> list = userMapper.query(query);
         if (list != null && list.size() > 0) {
             throw new BaseException("用户名已存在");
         }
-        user.setDelFlag("0");
-        user.setCreateTime(LocalDateTime.now());
-        user.setUpdateTime(LocalDateTime.now());
          userMapper.insert(user);
         return user;
     }
@@ -66,24 +59,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(User user) {
         // 编辑用户
-         userMapper.update(user);
+        User result = userMapper.queryById(user.getId());
+        if (result == null) {
+            throw new BaseException("用户不存在");
+        }
+        userMapper.update(user);
         return  queryById(user.getId());
     }
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param id 主键
-     * @return 是否成功
-     */
     @Override
     public void deleteById(Long id) {
+        // 删除用户
         User user = userMapper.queryById(id);
         if (user == null) {
             throw new BaseException("用户不存在");
         }
-        user.setDelFlag("1");
-        user.setUpdateTime(LocalDateTime.now());
-        userMapper.update(user);
+        userMapper.deleteById(id);
     }
 }

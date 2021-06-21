@@ -1,8 +1,12 @@
 package com.demo.auth.service.impl;
 
 import com.demo.auth.entity.Role;
+import com.demo.auth.entity.Role;
 import com.demo.auth.mapper.RoleMapper;
 import com.demo.auth.service.RoleService;
+import com.demo.common.exception.BaseException;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,64 +20,61 @@ import java.util.List;
  */
 @Service("tRoleService")
 public class RoleServiceImpl implements RoleService {
+
     @Resource
     private RoleMapper roleMapper;
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
-     */
     @Override
     public Role queryById(Long id) {
-        return  roleMapper.queryById(id);
+        // 根据ID查找
+        return roleMapper.queryById(id);
     }
 
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
     @Override
-    public List<Role> queryAllByLimit(int offset, int limit) {
-        return  roleMapper.queryAllByLimit(offset, limit);
+    public PageInfo<Role> queryByPage(int pageNum, int pageSize) {
+        // 分页查找
+        PageHelper.startPage(pageNum, pageSize);
+        List<Role> list = roleMapper.queryAll();
+        return new PageInfo<>(list);
     }
 
-    /**
-     * 新增数据
-     *
-     * @param role 实例对象
-     * @return 实例对象
-     */
+    @Override
+    public List<Role> queryAll() {
+        // 查询全部
+        return roleMapper.queryAll();
+    }
+
     @Override
     public Role insert(Role role) {
-         roleMapper.insert(role);
+        // 新增角色
+        Role query = new Role();
+        query.setRoleName(role.getRoleName());
+        List<Role> list = roleMapper.query(query);
+        if (list != null && list.size() > 0) {
+            throw new BaseException("角色名称已存在");
+        }
+        roleMapper.insert(role);
         return role;
     }
 
-    /**
-     * 修改数据
-     *
-     * @param role 实例对象
-     * @return 实例对象
-     */
     @Override
     public Role update(Role role) {
-         roleMapper.update(role);
+        // 编辑角色
+        Role result = roleMapper.queryById(role.getId());
+        if (result == null) {
+            throw new BaseException("角色不存在");
+        }
+        roleMapper.update(role);
         return  queryById(role.getId());
     }
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param id 主键
-     * @return 是否成功
-     */
     @Override
-    public boolean deleteById(Long id) {
-        return  roleMapper.deleteById(id) > 0;
+    public void deleteById(Long id) {
+        // 删除角色
+        Role role = roleMapper.queryById(id);
+        if (role == null) {
+            throw new BaseException("角色不存在");
+        }
+        roleMapper.deleteById(id);
     }
 }

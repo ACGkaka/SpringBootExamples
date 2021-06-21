@@ -1,6 +1,7 @@
 package com.demo.auth.service;
 
 import com.demo.auth.entity.User;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -23,11 +24,18 @@ public interface UserService {
     /**
      * 查询多条数据
      *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
+     * @return 对象列表
+     * @param pageNum 页码
+     * @param pageSize 每页数量
+     */
+    PageInfo<User> queryByPage(int pageNum, int pageSize);
+
+    /**
+     * 查询多条数据
+     *
      * @return 对象列表
      */
-    List<User> queryAllByLimit(int offset, int limit);
+    List<User> queryAll();
 
     /**
      * 新增数据

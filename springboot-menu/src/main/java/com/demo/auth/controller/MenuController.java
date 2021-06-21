@@ -1,7 +1,11 @@
 package com.demo.auth.controller;
 
 import com.demo.auth.entity.Menu;
+import com.demo.auth.entity.Menu;
 import com.demo.auth.service.MenuService;
+import com.demo.auth.service.MenuService;
+import com.demo.common.result.BaseResult;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,24 +27,48 @@ public class MenuController {
     private MenuService menuService;
 
     /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
+     * 用户 - 新增
      */
-    @GetMapping("selectOne")
-    public Menu selectOne(Long id) {
-        return  menuService.queryById(id);
+    @PostMapping("add")
+    public BaseResult add(@RequestBody Menu menu) {
+        menuService.insert(menu);
+        return BaseResult.success().setData(menu);
     }
 
     /**
-     * 查询全部数据
-     *
-     * @return 全部数据
+     * 用户 - 通过id查询
      */
-    @GetMapping("findAll")
-    public List<Menu> findAll() {
-        return  menuService.queryAllByLimit(1, -1);
+    @GetMapping("findById")
+    public BaseResult findById(Long id) {
+        Menu menu = menuService.queryById(id);
+        return BaseResult.success().setData(menu);
+    }
+
+    /**
+     * 用户 - 编辑保存
+     */
+    @PostMapping("save")
+    public BaseResult save(@RequestBody Menu menu) {
+        menu = menuService.update(menu);
+        return BaseResult.success().setData(menu);
+    }
+
+    /**
+     * 用户 - 通过id删除
+     */
+    @DeleteMapping("delete")
+    public BaseResult delete(Long id) {
+        menuService.deleteById(id);
+        return BaseResult.success();
+    }
+
+    /**
+     * 用户 - 分页查询
+     */
+    @GetMapping("findByPage")
+    public BaseResult findByPage(int pageNum, int pageSize) {
+        PageInfo<Menu> pageInfo = menuService.queryByPage(pageNum, pageSize);
+        return BaseResult.success().setData(pageInfo);
     }
 
 }

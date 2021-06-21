@@ -20,25 +20,24 @@
         select
           id, dept_id, username, password, email, phone, del_flag, create_time, update_time
         from t_user
-        where id = #{id}
+        where id = #{id} and del_flag != '1'
     </select>
 
     <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="BaseResultMap">
-        select
-          id, dept_id, username, password, email, phone, del_flag, create_time, update_time
-        from t_user
-        <if test="offset >= 0 and limit >= 0" >
-            limit #{offset}, #{limit}
-        </if>
-    </select>
-
-    <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
           id, dept_id, username, password, email, phone, del_flag, create_time, update_time
         from t_user
-        <where>
+        where del_flag != '1'
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="query" resultMap="BaseResultMap">
+        select
+          id, dept_id, username, password, email, phone, del_flag, create_time, update_time
+        from t_user
+        where
+            del_flag != '1'
             <if test="id != null">
                 and id = #{id}
             </if>
@@ -66,13 +65,12 @@
             <if test="updateTime != null">
                 and update_time = #{updateTime}
             </if>
-        </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into auth.t_user(dept_id, username, password, email, phone, del_flag, create_time, update_time)
-        values (#{deptId}, #{username}, #{password}, #{email}, #{phone}, #{delFlag}, #{createTime}, #{updateTime})
+        values (#{deptId}, #{username}, #{password}, #{email}, #{phone}, '0', #{createTime}, #{updateTime})
     </insert>
 
     <!--通过主键修改数据-->
@@ -94,9 +92,6 @@
             <if test="phone != null and phone != ''">
                 phone = #{phone},
             </if>
-            <if test="delFlag != null and delFlag != ''">
-                del_flag = #{delFlag},
-            </if>
             <if test="createTime != null">
                 create_time = #{createTime},
             </if>
@@ -104,12 +99,12 @@
                 update_time = #{updateTime},
             </if>
         </set>
-        where id = #{id}
+        where id = #{id} and del_flag != '1'
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from t_user where id = #{id}
+        update t_user set del_flag = '1' where id = #{id}
     </delete>
 
 </mapper>

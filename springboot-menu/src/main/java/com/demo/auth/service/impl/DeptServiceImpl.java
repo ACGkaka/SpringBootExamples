@@ -3,6 +3,9 @@ package com.demo.auth.service.impl;
 import com.demo.auth.entity.Dept;
 import com.demo.auth.mapper.DeptMapper;
 import com.demo.auth.service.DeptService;
+import com.demo.common.exception.BaseException;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,64 +19,61 @@ import java.util.List;
  */
 @Service("tDeptService")
 public class DeptServiceImpl implements DeptService {
+
     @Resource
     private DeptMapper deptMapper;
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
-     */
     @Override
     public Dept queryById(Long id) {
-        return  deptMapper.queryById(id);
+        // 根据ID查找
+        return deptMapper.queryById(id);
     }
 
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
     @Override
-    public List<Dept> queryAllByLimit(int offset, int limit) {
-        return  deptMapper.queryAllByLimit(offset, limit);
+    public PageInfo<Dept> queryByPage(int pageNum, int pageSize) {
+        // 分页查找
+        PageHelper.startPage(pageNum, pageSize);
+        List<Dept> list = deptMapper.queryAll();
+        return new PageInfo<>(list);
     }
 
-    /**
-     * 新增数据
-     *
-     * @param dept 实例对象
-     * @return 实例对象
-     */
+    @Override
+    public List<Dept> queryAll() {
+        // 查询全部
+        return deptMapper.queryAll();
+    }
+
     @Override
     public Dept insert(Dept dept) {
-         deptMapper.insert(dept);
+        // 新增部门
+        Dept query = new Dept();
+        query.setDeptName(dept.getDeptName());
+        List<Dept> list = deptMapper.query(query);
+        if (list != null && list.size() > 0) {
+            throw new BaseException("部门名称已存在");
+        }
+        deptMapper.insert(dept);
         return dept;
     }
 
-    /**
-     * 修改数据
-     *
-     * @param dept 实例对象
-     * @return 实例对象
-     */
     @Override
     public Dept update(Dept dept) {
-         deptMapper.update(dept);
+        // 编辑部门
+        Dept result = deptMapper.queryById(dept.getId());
+        if (result == null) {
+            throw new BaseException("部门不存在");
+        }
+        deptMapper.update(dept);
         return  queryById(dept.getId());
     }
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param id 主键
-     * @return 是否成功
-     */
     @Override
-    public boolean deleteById(Long id) {
-        return  deptMapper.deleteById(id) > 0;
+    public void deleteById(Long id) {
+        // 删除部门
+        Dept dept = deptMapper.queryById(id);
+        if (dept == null) {
+            throw new BaseException("部门不存在");
+        }
+        deptMapper.deleteById(id);
     }
 }

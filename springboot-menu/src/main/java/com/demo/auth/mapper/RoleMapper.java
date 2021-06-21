@@ -25,11 +25,9 @@ public interface RoleMapper {
     /**
      * 查询指定行数据
      *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
      * @return 对象列表
      */
-    List<Role> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<Role> queryAll();
 
 
     /**
@@ -38,7 +36,7 @@ public interface RoleMapper {
      * @param role 实例对象
      * @return 对象列表
      */
-    List<Role> queryAll(Role role);
+    List<Role> query(Role role);
 
     /**
      * 新增数据

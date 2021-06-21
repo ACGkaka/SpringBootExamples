@@ -13,7 +13,6 @@ import lombok.experimental.Accessors;
  * @date 2021/6/21 10:50
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
 public class BaseResult {
@@ -34,14 +33,22 @@ public class BaseResult {
     private Object data;
 
     /**
+     * 默认成功
+     */
+    private BaseResult() {
+        code = 200;
+        message = "操作成功";
+    }
+
+    /**
      * 定制构造方法
      *
      * @param code 状态码
      * @param message 返回信息
      */
     public BaseResult(int code, String message) {
-         code = code;
-         message = message;
+        this.code = code;
+        this.message = message;
     }
 
     /**

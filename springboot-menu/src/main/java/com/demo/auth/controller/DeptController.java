@@ -1,7 +1,10 @@
 package com.demo.auth.controller;
 
 import com.demo.auth.entity.Dept;
+import com.demo.auth.entity.Dept;
 import com.demo.auth.service.DeptService;
+import com.demo.common.result.BaseResult;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,24 +26,48 @@ public class DeptController {
     private DeptService deptService;
 
     /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
+     * 用户 - 新增
      */
-    @GetMapping("selectOne")
-    public Dept selectOne(Long id) {
-        return  deptService.queryById(id);
+    @PostMapping("add")
+    public BaseResult add(@RequestBody Dept dept) {
+        deptService.insert(dept);
+        return BaseResult.success().setData(dept);
     }
 
     /**
-     * 查询全部数据
-     *
-     * @return 全部数据
+     * 用户 - 通过id查询
      */
-    @GetMapping("findAll")
-    public List<Dept> findAll() {
-        return  deptService.queryAllByLimit(1, -1);
+    @GetMapping("findById")
+    public BaseResult findById(Long id) {
+        Dept dept = deptService.queryById(id);
+        return BaseResult.success().setData(dept);
+    }
+
+    /**
+     * 用户 - 编辑保存
+     */
+    @PostMapping("save")
+    public BaseResult save(@RequestBody Dept dept) {
+        dept = deptService.update(dept);
+        return BaseResult.success().setData(dept);
+    }
+
+    /**
+     * 用户 - 通过id删除
+     */
+    @DeleteMapping("delete")
+    public BaseResult delete(Long id) {
+        deptService.deleteById(id);
+        return BaseResult.success();
+    }
+
+    /**
+     * 用户 - 分页查询
+     */
+    @GetMapping("findByPage")
+    public BaseResult findByPage(int pageNum, int pageSize) {
+        PageInfo<Dept> pageInfo = deptService.queryByPage(pageNum, pageSize);
+        return BaseResult.success().setData(pageInfo);
     }
 
 }

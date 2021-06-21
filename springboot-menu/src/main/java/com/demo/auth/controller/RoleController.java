@@ -2,10 +2,11 @@ package com.demo.auth.controller;
 
 import com.demo.auth.entity.Role;
 import com.demo.auth.service.RoleService;
+import com.demo.common.result.BaseResult;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 角色表(Role)表控制层
@@ -23,24 +24,48 @@ public class RoleController {
     private RoleService roleService;
 
     /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
+     * 用户 - 新增
      */
-    @GetMapping("selectOne")
-    public Role selectOne(Long id) {
-        return  roleService.queryById(id);
+    @PostMapping("add")
+    public BaseResult add(@RequestBody Role role) {
+        roleService.insert(role);
+        return BaseResult.success().setData(role);
     }
 
     /**
-     * 查询全部数据
-     *
-     * @return 全部数据
+     * 用户 - 通过id查询
      */
-    @GetMapping("findAll")
-    public List<Role> findAll() {
-        return  roleService.queryAllByLimit(1, -1);
+    @GetMapping("findById")
+    public BaseResult findById(Long id) {
+        Role role = roleService.queryById(id);
+        return BaseResult.success().setData(role);
+    }
+
+    /**
+     * 用户 - 编辑保存
+     */
+    @PostMapping("save")
+    public BaseResult save(@RequestBody Role role) {
+        role = roleService.update(role);
+        return BaseResult.success().setData(role);
+    }
+
+    /**
+     * 用户 - 通过id删除
+     */
+    @DeleteMapping("delete")
+    public BaseResult delete(Long id) {
+        roleService.deleteById(id);
+        return BaseResult.success();
+    }
+
+    /**
+     * 用户 - 分页查询
+     */
+    @GetMapping("findByPage")
+    public BaseResult findByPage(int pageNum, int pageSize) {
+        PageInfo<Role> pageInfo = roleService.queryByPage(pageNum, pageSize);
+        return BaseResult.success().setData(pageInfo);
     }
 
 }

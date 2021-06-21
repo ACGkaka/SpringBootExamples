@@ -3,6 +3,7 @@ package com.demo.auth.controller;
 import com.demo.auth.entity.User;
 import com.demo.auth.service.UserService;
 import com.demo.common.result.BaseResult;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -60,11 +61,12 @@ public class UserController {
     }
 
     /**
-     * 用户 - 查询全部用户
+     * 用户 - 分页查询
      */
-    @GetMapping("findAll")
-    public List<User> findAll() {
-        return userService.queryAllByLimit(1, -1);
+    @GetMapping("findByPage")
+    public BaseResult findByPage(int pageNum, int pageSize) {
+        PageInfo<User> pageInfo = userService.queryByPage(pageNum, pageSize);
+        return BaseResult.success().setData(pageInfo);
     }
 
 }
