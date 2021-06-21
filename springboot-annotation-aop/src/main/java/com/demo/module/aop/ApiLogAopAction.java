@@ -3,12 +3,14 @@ package com.demo.module.aop;
 import com.demo.module.annotation.SystemLog;
 import com.demo.module.utils.AtomicCounter;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -52,6 +54,14 @@ public class ApiLogAopAction {
         AtomicCounter.init(annotation.module(), request.getRequestURI());
         // 计数
         AtomicCounter.getInstance().increaseVisit(request.getRequestURI());
+    }
+
+    /**
+     * 环绕增强，相当于MethodInterceptor
+     */
+    @Around("log()")
+    public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        return joinPoint.proceed();
     }
 
     /**
