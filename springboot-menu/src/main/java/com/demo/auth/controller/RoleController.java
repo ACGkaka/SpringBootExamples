@@ -24,7 +24,7 @@ public class RoleController {
     private RoleService roleService;
 
     /**
-     * 用户 - 新增
+     * 角色 - 新增
      */
     @PostMapping("add")
     public BaseResult add(@RequestBody Role role) {
@@ -33,7 +33,7 @@ public class RoleController {
     }
 
     /**
-     * 用户 - 通过id查询
+     * 角色 - 通过id查询
      */
     @GetMapping("findById")
     public BaseResult findById(Long id) {
@@ -42,7 +42,7 @@ public class RoleController {
     }
 
     /**
-     * 用户 - 编辑保存
+     * 角色 - 编辑保存
      */
     @PostMapping("save")
     public BaseResult save(@RequestBody Role role) {
@@ -51,7 +51,7 @@ public class RoleController {
     }
 
     /**
-     * 用户 - 通过id删除
+     * 角色 - 通过id删除
      */
     @DeleteMapping("delete")
     public BaseResult delete(Long id) {
@@ -60,7 +60,7 @@ public class RoleController {
     }
 
     /**
-     * 用户 - 分页查询
+     * 角色 - 分页查询
      */
     @GetMapping("findByPage")
     public BaseResult findByPage(int pageNum, int pageSize) {

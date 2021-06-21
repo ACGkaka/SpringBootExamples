@@ -33,6 +33,10 @@ public class Role implements Serializable {
     */
     private String status;
     /**
+     * 菜单ID数组
+     */
+    private Long[] menuIds;
+    /**
     * 删除标识（0未删除 1已删除）
     */
     private String delFlag;

@@ -14,7 +14,7 @@ import java.util.List;
  * @author ACGkaka
  * @since 2021-06-18 19:11:04
  */
-@Service("tRoleDeptService")
+@Service
 public class RoleDeptServiceImpl implements RoleDeptService {
     @Resource
     private RoleDeptMapper roleDeptMapper;

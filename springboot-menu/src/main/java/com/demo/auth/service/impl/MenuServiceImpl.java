@@ -18,7 +18,7 @@ import java.util.List;
  * @author ACGkaka
  * @since 2021-06-18 19:11:03
  */
-@Service("tMenuService")
+@Service
 public class MenuServiceImpl implements MenuService {
 
     @Resource

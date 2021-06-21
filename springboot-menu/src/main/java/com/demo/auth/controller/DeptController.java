@@ -26,7 +26,7 @@ public class DeptController {
     private DeptService deptService;
 
     /**
-     * 用户 - 新增
+     * 部门 - 新增
      */
     @PostMapping("add")
     public BaseResult add(@RequestBody Dept dept) {
@@ -35,7 +35,7 @@ public class DeptController {
     }
 
     /**
-     * 用户 - 通过id查询
+     * 部门 - 通过id查询
      */
     @GetMapping("findById")
     public BaseResult findById(Long id) {
@@ -44,7 +44,7 @@ public class DeptController {
     }
 
     /**
-     * 用户 - 编辑保存
+     * 部门 - 编辑保存
      */
     @PostMapping("save")
     public BaseResult save(@RequestBody Dept dept) {
@@ -53,7 +53,7 @@ public class DeptController {
     }
 
     /**
-     * 用户 - 通过id删除
+     * 部门 - 通过id删除
      */
     @DeleteMapping("delete")
     public BaseResult delete(Long id) {
@@ -62,7 +62,7 @@ public class DeptController {
     }
 
     /**
-     * 用户 - 分页查询
+     * 部门 - 分页查询
      */
     @GetMapping("findByPage")
     public BaseResult findByPage(int pageNum, int pageSize) {

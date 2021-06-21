@@ -18,7 +18,7 @@ import java.util.List;
  * @author ACGkaka
  * @since 2021-06-18 19:11:03
  */
-@Service("tDeptService")
+@Service
 public class DeptServiceImpl implements DeptService {
 
     @Resource
