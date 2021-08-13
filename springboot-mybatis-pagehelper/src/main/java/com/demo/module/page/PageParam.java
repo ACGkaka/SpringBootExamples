@@ -12,7 +12,7 @@ import lombok.Data;
 public class PageParam {
 
     /**
-     * 当前记录起始索引
+     * 当前页码
      */
     private Integer pageNum;
 
