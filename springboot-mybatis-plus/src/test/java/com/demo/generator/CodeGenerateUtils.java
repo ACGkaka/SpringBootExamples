@@ -103,7 +103,7 @@ public class CodeGenerateUtils {
         strategy.setRestControllerStyle(true);
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
-        // 设置表前缀
+        // 设置表前缀（设置t_之后，生成的类不再以T开头）
         strategy.setTablePrefix("");
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
