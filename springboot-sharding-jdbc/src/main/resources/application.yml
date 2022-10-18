@@ -1,0 +1,63 @@
+server:
+  port: 8081
+
+spring:
+  shardingsphere:
+    # 打印sql
+#    props:
+#      sql:
+#        show: true
+    datasource:
+      names: mydb
+      mydb:
+        type: com.alibaba.druid.pool.DruidDataSource
+        url: jdbc:mysql://localhost:3306/mydb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: root
+        # 数据源其他配置
+        initialSize: 5
+        minIdle: 5
+        maxActive: 20
+        maxWait: 60000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1 FROM DUAL
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+        #filters: stat,wall,log4j
+        maxPoolPreparedStatementPerConnectionSize: 20
+        useGlobalDataSourceStat: true
+        connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    sharding:
+      # 表策略配置
+      tables:
+        # t_user 是逻辑表
+        t_user:
+          # 分表节点 可以理解为分表后的那些表 比如 t_user_1 ,t_user_2 ,t_user_3
+          actualDataNodes: mydb.t_user_$->{1..3}
+          tableStrategy:
+            inline:
+              # 根据哪列分表
+              shardingColumn: age
+              # 分表算法 例如：age为奇数 -> t_user_2； age为偶数 -> t_user_1
+              algorithmExpression: t_user_$->{age % 2 + 1}
+              # 分表算法 例如：age为3 -> t_user_3
+#              algorithmExpression: t_user_$->{age}
+              # 分表后，sharding-jdbc的全局id生成策略
+#              keyGenerator:
+#                type: SNOWFLAKE
+#                # 对id列采用 sharding-jdbc的全局id生成策略
+#                column: id
+
+# mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  # 实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: cn.agile.stats.*.entity
+  # 测试环境打印sql
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
